@@ -54,19 +54,20 @@ class EmailHelper():
 @click.command()
 @click.option('-r','--recipient',required=True,help='the recipient email address')
 @click.option('-s','--subject',required=True,help='the subject of email')
-@click.option('-c','--content',required=True,help='the content of email')
+@click.option('-t','--text',required=True,help='the plain text content of email')
+@click.option('-c','--config',default='email.ini',help='specify config file')
 @click.option('-f','--attached_files',multiple=True,help='the attached files')
-def commandline(recipient,subject,content,attached_files):
+def commandline(recipient,subject,text,attached_files,config):
     cfg = configparser.ConfigParser()
     configLocation = None
-    for location in ['email.ini',os.path.expanduser('~/.email.ini'),'/etc/emailsender/email.ini']:
+    for location in [config,os.path.expanduser('~/.email.ini'),'/etc/emailsender/email.ini']:
         if os.path.exists(location):
             configLocation = location
             break
     assert configLocation != None 
     cfg.read(configLocation,encoding='utf-8')
     helper = EmailHelper(cfg['EMAIL'])
-    helper.send_email_with_attachments(recipient,subject,content,attached_files)
+    helper.send_email_with_attachments(recipient,subject,text,attached_files)
 
 if __name__ == '__main__':
     commandline()
