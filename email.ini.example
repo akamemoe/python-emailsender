@@ -1,0 +1,6 @@
+[EMAIL]
+smtphost = smtp.yandex.com
+smtpport = 465
+username = example@yandex.com
+password = password
+nickname = Notifier
